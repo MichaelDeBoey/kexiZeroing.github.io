@@ -247,6 +247,12 @@ type User = typeof user
 // Built-in Helper Types (https://www.typescriptlang.org/docs/handbook/utility-types.html)
 const fieldsToUpdate: Partial<Todo>
 const todo: Readonly<Todo>
+const readOnlyGenres: readonly string[] = ["rock", "pop", "country"]
+// The `as const` assertion made the entire object deeply read-only,
+// including all nested properties. (js `Object.freeze` only at the first level)
+const albumAttributes = {
+  status: "on-sale",
+} as const;
 const cats: Record<string, string | number>
 type TodoPreview = Omit<Todo, "description">
 type TodoPreview = Pick<Todo, "title" | "completed">
@@ -264,6 +270,21 @@ const albumAwards: {
 } = {};
 // more concise way
 const albumAwards: Record<string, boolean> = {};
+```
+
+```ts
+// built-in Omit and Pick are not distributive over union types
+type A = { a: string; c: boolean, d: number };
+type B = { b: number; c: boolean, d: number };
+type Union = A | B;
+
+type NonDistributive = Omit<Union, 'c'>; // { d: number; }
+
+type DistributiveOmit<T, K extends PropertyKey> = T extends any
+  ? Omit<T, K>
+  : never;
+
+type Distributive = DistributiveOmit<Union, 'c'>; // Omit<A, "c"> | Omit<B, "c">
 ```
 
 ```tsx
