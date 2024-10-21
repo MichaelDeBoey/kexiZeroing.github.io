@@ -5,7 +5,7 @@ slug: intro-to-typescript
 description: ""
 added: "Jun 12 2022"
 tags: [js]
-updatedDate: "Sep 29 2024"
+updatedDate: "Oct 21 2024"
 ---
 
 > There is a broad spectrum of what TypeScript can give you. On the one side of this spectrum, we have: writing good old JavaScript, without types or filling the gaps with any, and after the implementation is done — fixing the types. On the other side of the spectrum, we have type-driven development. Read from https://www.aleksandra.codes/fighting-with-ts
@@ -135,7 +135,7 @@ Sizes.Small;   // 1
 Sizes.Medium;  // 2
 Sizes.Large;   // 3
 
-// String values can also be assigned to an enum.
+// String values can also be assigned to an enum
 enum ThemeColors {
   Primary = 'primary',
   Secondary = 'secondary',
@@ -145,10 +145,10 @@ enum ThemeColors {
 
 // Real-world examples of Typescript enums
 enum LogLevel {
-    ERROR,
-    WARNING,
-    INFO,
-    DEBUG
+  ERROR,
+  WARNING,
+  INFO,
+  DEBUG
 }
 
 enum HTTPStatus {
@@ -159,6 +159,24 @@ enum HTTPStatus {
   NotFound = 404,
   InternalServerError = 500,
 }
+```
+
+```js
+// How numeric enums transpile
+var AlbumStatus;
+(function (AlbumStatus) {
+  AlbumStatus[(AlbumStatus["NewRelease"] = 0)] = "NewRelease";
+  AlbumStatus[(AlbumStatus["OnSale"] = 1)] = "OnSale";
+  AlbumStatus[(AlbumStatus["StaffPick"] = 2)] = "StaffPick";
+})(AlbumStatus || (AlbumStatus = {}));
+
+// How string enums transpile
+var AlbumStatus;
+(function (AlbumStatus) {
+  AlbumStatus["NewRelease"] = "NEW_RELEASE";
+  AlbumStatus["OnSale"] = "ON_SALE";
+  AlbumStatus["StaffPick"] = "STAFF_PICK";
+})(AlbumStatus || (AlbumStatus = {}));
 ```
 
 Fortunately, you don't have to specify types absolutely everywhere in your code because TypeScript has **Type Inference**. Type inference is what the TypeScript compiler uses to automatically determine types. TypeScript can infer types during variable initialization, when default parameter values are set, and while determining function return values.
@@ -224,14 +242,21 @@ interface User extends User1 {  // raise an error
 }
 
 // `typeof` operator takes any object and extracts the shape of it.
-const defaultOrder = {
-  x: 1,
-  y: {
-    a: 'apple',
-    b: [1,2]
-  }
-}
-type Order = typeof defaultOrder
+// It is not the same as the `typeof` operator used at runtime
+const albumSales = {
+  "Kind of Blue": 500,
+  "A Love Supreme": 100,
+  "Mingus Ah Um": 300,
+};
+type AlbumSalesType = typeof albumSales;
+// type AlbumSalesType = {
+//    "Kind of Blue": number;
+//    "A Love Supreme": number;
+//    "Mingus Ah Um": number;
+// }
+
+// Runtime typeof
+typeof albumSales; // "object"
 
 function createUser(name: string, role: 'admin' | 'maintenance') {
   return {
@@ -256,11 +281,22 @@ const albumAttributes = {
 const cats: Record<string, string | number>
 type TodoPreview = Omit<Todo, "description">
 type TodoPreview = Pick<Todo, "title" | "completed">
-// retrieve the return type from the function signature without run the function
-type User = ReturnType<typeof createUser>
-// collect all arguments from a function in a tuple
-type Param = Parameters<typeof createUser>
 
+// Derive types from functions
+function sellAlbum(album: Album, price: number, quantity: number) {
+  return price * quantity
+}
+// extracts the parameters from a given function type and returns them as a tuple
+type SellAlbumParams = Parameters<typeof sellAlbum>  // [album: Album, price: number, quantity: number]
+// retrieve the return type from the function signature without run the function
+type SellAlbumReturn = ReturnType<typeof sellAlbum>  // number
+// unwrap the Promise type and provide the type of the resolved value
+type User = Awaited<ReturnType<typeof fetchUser>>
+
+// Idexed access types
+type AlbumTitle = Album["title"];
+type AlbumPropertyTypes = Album["title" | "isSingle" | "releaseYear"];
+type AlbumPropertyTypes = Album[keyof Album];
 // Index signatures for dynamic keys
 interface AlbumAwards {
   [iCanBeAnything: string]: boolean;
@@ -270,6 +306,17 @@ const albumAwards: {
 } = {};
 // more concise way
 const albumAwards: Record<string, boolean> = {};
+```
+
+It's worth noting the similarities between `Exclude/Extract` and `Omit/Pick`. A common mistake is to think that you can `Pick` from a union, or use `Exclude` on an object.
+
+```ts
+// Exclude/Extract - union (members)
+// Omit/Pick - object (properties)
+Exclude<'a' | 1, string>
+Extract<'a' | 1, string>
+Omit<UserObj, 'id'>
+Pick<UserObj, 'id'>
 ```
 
 ```ts
@@ -380,8 +427,25 @@ type GroupedEvents = {
   [Kind in EventKind]: TechEvent[]
 }
 
-// keyof (get object keys of the type)
+// `keyof` extracts the keys from an object type into a union type
 type GroupProperties = keyof GroupedEvents
+
+// grab the keys and values when we don't know the type of an object
+type UppercaseAlbumType = keyof typeof albumTypes
+type AlbumType = (typeof albumTypes)[keyof typeof albumTypes]
+```
+
+The `as` assertion is a way to tell TypeScript that you know more about a value than it does. It's a way to override TS type inference and tell it to treat a value as a different type. Another assertion we can use is the non-null assertion, which is specified by using the `!` operator. It tells TS to remove any `null` or `undefined` types from the variable.
+
+```ts
+const searchParams = new URLSearchParams(window.location.search)
+const id = searchParams.get("id") // string | null
+
+const id = searchParams.get("id") as string;
+const albumSales = "Heroes" as unknown as number;
+const obj = {} as { a: number; b: number };
+searchParams.get("id")!;
+console.log(user.profile!.bio);
 ```
 
 **Generic Types**: Instead of working with a specific type, we work with a parameter that is then substituted for a specific type. Type parameters are denoted within angle brackets at function heads or class declarations. *[Generics are not scary](https://ts.chibicode.com/generics). They’re like regular function parameters, but instead of values, it deals with types.*
@@ -432,11 +496,13 @@ declare global {
 Interfaces in TypeScript have an odd property. When multiple interfaces with the same name in the same scope are created, TypeScript automatically merges them. This is known as declaration merging. This is very different from `type`, which would give you an error if you tried to declare the same type twice.
 
 ### How to use @ts-expect-error
-`@ts-expect-error` lets you specify that an error will occur on the next line of the file, which is helpful letting us be sure that an error will occur. If `@ts-expect-error` doesn't find an error, it will source an error itself *(Unused '@ts-expect-error' directive)*.
+`@ts-expect-error` lets you specify that an error will occur on the next line of the file, which is helpful letting us be sure that an error will occur. If `@ts-expect-error` doesn't find an error, it will source an error itself: *Unused '@ts-expect-error' directive*.
 
 When you actually want to ignore an error, you'll be tempted to use `@ts-ignore`. It works similarly to `@ts-expect-error`, except for one thing: it won't error if it doesn't find an error.
 
 Sometimes, you'll want to ignore an error that later down the line gets fixed. If you're using `@ts-ignore`, it'll just ignore the fact that the error is gone. But with `@ts-expect-error`, you'll actually get a hint that the directive is now safe to remove. So if you're choosing between them, pick `@ts-expect-error`.
+
+Finally, The `@ts-nocheck` directive will completely remove type checking for a file. To use it, add the directive at the top of your file.
 
 ## Building the Validation Schema with Zod
 [Zod](https://github.com/colinhacks/zod) is a TypeScript-first schema declaration and validation library. With Zod, you declare a validator once and Zod will automatically infer the static TypeScript type. It's easy to compose simpler types into complex data structures.
