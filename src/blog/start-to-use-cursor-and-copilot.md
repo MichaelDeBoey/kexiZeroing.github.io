@@ -224,6 +224,8 @@ Three-level loading pattern to manage context efficiently (progressive disclosur
 | 2     | Full `SKILL.md` body                           | When skill is activated    | < 5k tokens recommended |
 | 3     | Referenced files (scripts, references, assets) | On demand, as needed       | Unlimited               |
 
+https://resources.anthropic.com/hubfs/The-Complete-Guide-to-Building-Skill-for-Claude.pdf
+
 ### What are premium requests
 
 Each time you send a prompt in a chat window or trigger a response from Copilot, you’re making a request. Some Copilot features use more advanced processing power and count as premium requests. Copilot Chat uses one premium request per user prompt, multiplied by the model's rate. This includes ask, edit, agent, and plan modes in Copilot Chat in an IDE.

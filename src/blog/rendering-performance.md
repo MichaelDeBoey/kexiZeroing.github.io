@@ -92,6 +92,8 @@ Generally speaking, when loading resources into web pages, there are three possi
 - Classic scripts block parsing (and therefore also rendering). JS can modify the DOM as it parses, so the browser stops parsing the HTML entirely until the script is downloaded, parsed, and executed.
 - Adding `async`, `defer` or `type=module` attributes allows HTML parsing and initial rendering to begin earlier than a classic script. But only `defer` and `type="module"` guarantee they won’t interfere with rendering.
 
+> In DevTools 145, the Network panel now includes a dedicated Render blocking column. This lets you immediately identify which resources (JavaScript, CSS, and fonts) are preventing the browser from painting the page content, helping you optimize your First Paint performance.
+
 For script tags, **`<script async>`** downloads the file during HTML parsing and will pause the HTML parser to execute it when it has finished downloading. Async scripts are executed as soon as the script is loaded, so it doesn't guarantee the order of execution. **`<script defer>`** downloads the file during HTML parsing and will only execute it after the parser has completed. The good thing about defer is that you can guarantee the order of the script execution. _When you have both async and defer, `async` takes precedence and the script will be async._
 
 If you know that a particular resource should be prioritized, use `<link rel="preload">` to fetch it sooner. By preloading a certain resource, you are telling the browser that you would like to fetch it sooner than the browser would discover it because you are certain that it is important for the current page. **Preloading is best suited for resources typically discovered late by the browser**. The browser caches preloaded resources so they are available immediately when needed. It doesn't execute the scripts or apply the stylesheets. Supplying the `as` attribute helps the browser set the priority of the prefetched resource according to its type and determine whether the resource already exists in the cache.
@@ -147,21 +149,21 @@ window.addEventListener("load", (event) => {
 
   console.log(
     "Ready to start running `defer`ed code: " +
-      (timings.domInteractive - start + "ms")
+      (timings.domInteractive - start + "ms"),
   );
   console.log(
     "`defer`ed code finished: " +
-      (timings.domContentLoadedEventEnd - start + "ms")
+      (timings.domContentLoadedEventEnd - start + "ms"),
   );
   console.log(
     "`defer`ed code duration: " +
-      (timings.domContentLoadedEventStart - timings.domInteractive + "ms")
+      (timings.domContentLoadedEventStart - timings.domInteractive + "ms"),
   );
   console.log(
     "`DOMContentLoaded`- wrapped code duration: " +
       (timings.domContentLoadedEventEnd -
         timings.domContentLoadedEventStart +
-        "ms")
+        "ms"),
   );
 });
 ```

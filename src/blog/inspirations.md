@@ -79,6 +79,8 @@ Making devs finally write docs by calling them “skills” is a clever trick.
 - npx skills add vercel/ai-elements
 - npx skills add remotion-dev/skills
 - npx skills add addyosmani/web-quality-skills
+- npx skills add google-gemini/gemini-skills --list
+- npx skills add clerk/skills
 
 People also made their own skills collections:
 
@@ -86,6 +88,7 @@ People also made their own skills collections:
 - https://github.com/sergiodxa/agent-skills
 - https://github.com/JimLiu/baoyu-skills
 - https://github.com/intellectronica/agent-skills
+- https://github.com/mattpocock/skills
 
 ## Learn from mistakes
 

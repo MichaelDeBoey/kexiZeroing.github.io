@@ -23,6 +23,8 @@ There are also different color depths: Indexed color and Direct color.
 - **Indexed** means that the image can only store a limited number of colors (usually 256).
 - **Direct** means that you can store millions of colors. The term "true color" is sometimes used to mean direct color. It is also often used to refer to all color depths greater or equal to 24.
 
+Some images use 16 bits per channel. That is 65,536 values per channel instead of 256. These are called HDR or high dynamic range images. Way more color precision. Way bigger files. Mostly used in photography and film where you need room to adjust exposure and color.
+
 Then, there are differences between bitmap and vector images.
 
 - **Bitmap (or raster)** images are stored as a series of pixels. Each pixel is actually a very small square that is assigned a color, and then arranged in a pattern to form the image. When you zoom in on a bitmap image you can see the individual pixels that make up that image.

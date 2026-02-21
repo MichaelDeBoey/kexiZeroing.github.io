@@ -250,6 +250,8 @@ CSS Wrapped 2024: https://chrome.dev/css-wrapped-2024
 
 First Look at The Modern attr(): https://ishadeed.com/article/modern-attr
 
+Modern CSS code snippets: https://modern-css.com
+
 ---
 
 ## FE dev resources
@@ -327,6 +329,8 @@ WebGL globe library: https://github.com/shuding/cobe
 A PDF viewer that integrates with any JavaScript project: https://github.com/embedpdf/embed-pdf-viewer
 
 Top Pens of 2025 on CodePen: https://codepen.io/2025/popular
+
+Cloudflare's component library: https://github.com/cloudflare/kumo
 
 ---
 

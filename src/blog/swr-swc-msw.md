@@ -17,7 +17,7 @@ The name “SWR” is derived from `stale-while-revalidate`, a cache invalidatio
 ```jsx
 import useSWR from "swr";
 // you can use the native fetch or tools like Axios
-const fetcher = (...args) => fetch(...args).then(res => res.json());
+const fetcher = (...args) => fetch(...args).then((res) => res.json());
 
 function Profile() {
   const { data, error, isLoading } = useSWR("/api/user/123", fetcher);
@@ -114,17 +114,17 @@ SWR also provides `useSWRMutation` as a hook for remote mutations.
 
 ```js
 import useSWRMutation from 'swr/mutation'
- 
+
 async function sendRequest(url, { arg }: { arg: { username: string }}) {
   return fetch(url, {
     method: 'POST',
     body: JSON.stringify(arg)
   }).then(res => res.json())
 }
- 
+
 function App() {
   const { trigger, isMutating } = useSWRMutation('/api/user', sendRequest, /* options */)
- 
+
   return (
     <button
       disabled={isMutating}
@@ -155,7 +155,7 @@ npm i -D @swc/cli @swc/core
 
 # Transpile one file and emit to stdout
 npx swc ./file.js
- 
+
 # Transpile one file and emit to `output.js`
 npx swc ./file.js -o output.js
 ```

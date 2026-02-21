@@ -230,14 +230,52 @@ export async function getStaticPaths() {
 
 ## Headless UI and shadcn/ui
 
-The web platform is severely lacking in terms of UI components. There's pretty minimal by way of built-in components, and for many that do exist, they are extremely difficult to style. What's best is to get a "headless" UI library: One which handles the logic of accessible, reusable components, but leaves the styling up to you. **Headless UI components separate the logic and behavior of a component from its visual representation.** They offer maximum visual flexibility by providing no interface.
+The web platform is severely lacking in terms of UI components. There's pretty minimal by way of built-in components, and for many that do exist, they are extremely difficult to style. What's best is to get a "headless" UI library: One which handles the logic of accessible, reusable components, but leaves the styling up to you. **Headless UI components separate the logic and behavior of a component from its visual representation.** They offer maximum visual flexibility by providing no interface. This approach works especially well with Tailwind CSS, custom design systems, shadcn-style component architectures.
 
 > Check out the video [So You Think You Can Build A Dropdown?](https://www.youtube.com/watch?v=lY-RQjWeweo) which goes deep into the complexities of designing and building a fully-accessible dropdown menu.
 
 People constantly have to reinvent the wheel to offer fairly basic functionality, so it’s good that there are libraries to handle the behaviour and accessibility while supporting whatever visual styles you want to make.
 
 - [Headless UI](https://headlessui.com) is a good example, which contains completely unstyled, fully accessible UI components, designed to integrate beautifully with Tailwind CSS.
-- [Radix UI](https://github.com/radix-ui/primitives) is a low-level UI component library with a focus on accessibility, customization and developer experience. You can use these components either as the base layer of your design system, or adopt them incrementally. Try out: https://www.radix-ui.com/themes/playground
+- [Radix UI](https://github.com/radix-ui/primitives) is a low-level UI component library with a focus on accessibility, customization and developer experience. You can use these components either as the base layer of your design system, or adopt them incrementally. If your goal is to build a product quickly and safely, Radix UI is usually the better choice. It gives you: “Good defaults, fewer decisions, and fewer bugs.”
+- [Base UI](https://base-ui.com) is a library of unstyled UI components for building accessible component libraries, user interfaces, web applications, and websites with React, from the creators of Radix, Floating UI, and Material UI. Base UI shines when flexibility, control, and customization matter more than ready-made behavior.
+
+```jsx
+// Radix UI (Structured Components)
+function RadixDialog() {
+  return (
+    <Dialog.Root>
+      <Dialog.Trigger>Open</Dialog.Trigger>
+
+      <Dialog.Portal>
+        <Dialog.Overlay className="overlay" />
+        <Dialog.Content className="content">
+          <Dialog.Title>Dialog title</Dialog.Title>
+          <Dialog.Description>Dialog description</Dialog.Description>
+
+          <Dialog.Close>Close</Dialog.Close>
+        </Dialog.Content>
+      </Dialog.Portal>
+    </Dialog.Root>
+  );
+}
+
+// Base UI (Behavior-First)
+function BaseDialog() {
+  return (
+    <Dialog.Root>
+      <Dialog.Trigger>Open</Dialog.Trigger>
+
+      <Dialog.Popup className="content">
+        <h2>Dialog title</h2>
+        <p>Dialog description</p>
+
+        <button>Close</button>
+      </Dialog.Popup>
+    </Dialog.Root>
+  );
+}
+```
 
 Then it leaves us with the decision about how to style things. This is where shadcn/ui comes into the picture. It's not a component library, but more of a code registry where you can copy/paste/modify the code to your content. It's **built with Tailwind and Radix**. `shadcn/ui` is a collection of reusable components that can be copied and pasted into your apps. Every component can be installed separately. It also provides a CLI that can be used to easily import components into your project, as simple as `npx shadcn@latest add card`.
 
@@ -347,6 +385,10 @@ Watch this: https://www.youtube.com/watch?v=Kr4VxMbF3LY
 3. Try to run the script `"lint": "eslint ."` and install the required eslint plugins.
 4. Copy the VS Code support (auto fix on save) settings from https://github.com/antfu/eslint-config to your `.vscode/settings.json`.
 5. Add a `"lint:fix": "eslint --fix ."` script and run it.
+
+### Fastest Frontend Tooling
+
+Read this: https://cpojer.net/posts/fastest-frontend-tooling
 
 ### What is Husky
 
