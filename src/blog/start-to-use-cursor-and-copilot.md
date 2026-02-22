@@ -224,7 +224,9 @@ Three-level loading pattern to manage context efficiently (progressive disclosur
 | 2     | Full `SKILL.md` body                           | When skill is activated    | < 5k tokens recommended |
 | 3     | Referenced files (scripts, references, assets) | On demand, as needed       | Unlimited               |
 
-https://resources.anthropic.com/hubfs/The-Complete-Guide-to-Building-Skill-for-Claude.pdf
+- https://resources.anthropic.com/hubfs/The-Complete-Guide-to-Building-Skill-for-Claude.pdf
+- https://github.com/anthropics/skills/tree/main/skills
+- https://github.com/github/awesome-copilot/tree/main/skills
 
 ### What are premium requests
 
