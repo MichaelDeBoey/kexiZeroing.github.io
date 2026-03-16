@@ -159,6 +159,12 @@ console.log(counter.value()); // logs 1
 
 > It is unwise to unnecessarily create functions within other functions if closures are not needed for a particular task, as it will negatively affect script performance both in terms of processing speed and memory consumption. In JavaScript, memory leaks happen when objects are no longer needed, but are still referenced by functions or other objects. These references prevent the unneeded objects from being reclaimed by the garbage collector.
 
+V8 contains a mark-and-sweep garbage collector.
+
+<img alt="mark-and-sweep" src="https://raw.githubusercontent.com/kexiZeroing/blog-images/main/mark-and-sweep.png" width="550">
+
+<img alt="gc-closure" src="https://raw.githubusercontent.com/kexiZeroing/blog-images/main/gc-closure.png" width="550">
+
 ## try...catch...finally
 
 The try statement consists of a try block, which contains one or more statements. `{}` must always be used, even for single statements. At least one catch clause, or a finally clause, must be present. If any statement within the try-block throws an exception, control is immediately shifted to the catch-block. If no exception is thrown in the try-block, the catch-block is skipped.
