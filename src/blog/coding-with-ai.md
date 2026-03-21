@@ -308,6 +308,7 @@ People also made their own skills collections:
 - https://github.com/intellectronica/agent-skills
 - https://github.com/mattpocock/skills
 - https://github.com/addyosmani/agent-skills
+- https://github.com/MiniMax-AI/skills
 
 ### Copilot CLI
 

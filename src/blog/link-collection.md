@@ -594,6 +594,8 @@ You Could've Invented OpenClaw: https://gist.github.com/dabit3/bc60d3bea0b029279
 
 Comprehensive Claude Code project configuration showcase: https://github.com/ChrisWiles/claude-code-showcase
 
+Comprehensive Vercel ecosystem plugin: https://github.com/vercel/vercel-plugin
+
 ---
 
 ## CLI for Agents

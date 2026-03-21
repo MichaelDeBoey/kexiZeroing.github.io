@@ -154,6 +154,8 @@ const moduleURL = URL.createObjectURL(
 
 **Sandpack** is a component toolkit for creating live-running code editing experiences, powered by the online bundler used on CodeSandbox. https://sandpack.codesandbox.io
 
+> Sandpack is no longer actively maintained. The repository will remain public and available, but there will be no further feature development or official support.
+
 ```jsx
 import { Sandpack } from "@codesandbox/sandpack-react";
 

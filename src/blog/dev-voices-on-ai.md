@@ -55,3 +55,11 @@ It is not very good at architecture, extensibility, design, or product. If you t
 Newer models will get better but this behavior will probably always stay. There are a bunch of approaches out there on how to tune it away from doing this. But they all require you to still be a good software developer.
 
 Engineering has always been about tradeoffs and judgment and I have seen nothing that indicates that this will change.
+
+From Antirez:
+
+At the current state, AI actually amplifies the developer to developer difference. If you were a 10x developer, you had good ideas + architectural clarity, this is a brutal advantage when using AI. Steering is a fundamental part of today's AI development.
+
+Whatever you believe about what the Right Thing should be, you can't control it by refusing what is happening right now. Skipping AI is not going to help you or your career. Think about it. Test these new tools, with care, with weeks of work, not in a five minutes test where you can just reinforce your own beliefs. Find a way to multiply yourself, and if it does not work for you, try again every few months.
+
+Yes, maybe you think that you worked so hard to learn coding, and now machines are doing it for you. But what was the fire inside you, when you coded till night to see your project working? It was building. And now you can build more and better, if you find your way to use AI effectively. The fun is still there, untouched.
