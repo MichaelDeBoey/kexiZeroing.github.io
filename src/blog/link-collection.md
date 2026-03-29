@@ -596,6 +596,8 @@ Comprehensive Claude Code project configuration showcase: https://github.com/Chr
 
 Comprehensive Vercel ecosystem plugin: https://github.com/vercel/vercel-plugin
 
+Agentic Engineering Patterns: https://simonwillison.net/guides/agentic-engineering-patterns
+
 ---
 
 ## CLI for Agents

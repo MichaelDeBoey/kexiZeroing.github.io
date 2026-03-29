@@ -147,6 +147,40 @@ function App() {
 }
 ```
 
+Tab switching with heavy content is another example of a good use case for `startTransition`. Without `startTransition`, the clicked tab does not visually highlight until the entire new content is rendered. It feels like the click did nothing. With `startTransition`, you update the active tab immediately as an urgent update. Then you load the tab content as a transition. The tab highlights instantly. The content appears a moment later.
+
+```jsx
+function Tabs({ tabs }) {
+  const [activeTab, setActiveTab] = useState(0);
+  const [content, setContent] = useState(tabs[0].content);
+  const [isPending, startTransition] = useTransition();
+
+  function handleClick(index) {
+    setActiveTab(index);
+    startTransition(() => {
+      setContent(tabs[index].content);
+    });
+  }
+
+  return (
+    <div>
+      <div className="tabs">
+        {tabs.map((tab, i) => (
+          <button
+            key={i}
+            onClick={() => handleClick(i)}
+            className={i === activeTab ? "active" : ""}
+          >
+            {tab.label}
+          </button>
+        ))}
+      </div>
+      {isPending ? <Spinner /> : <TabContent data={content} />}
+    </div>
+  );
+}
+```
+
 We can also use `useDeferredValue` for the query used in rendering the list, allowing React to prioritize more urgent input changes over re-rendering the list. During updates, React will first attempt a re-render with the old value, and then try another re-render in the background with the new value.
 
 <img alt="react-18-transition" src="https://raw.githubusercontent.com/kexiZeroing/blog-images/main/react-18-transition.png" width="600">
