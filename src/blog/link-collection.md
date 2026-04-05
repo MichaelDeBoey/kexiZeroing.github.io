@@ -332,6 +332,8 @@ Cloudflare's component library: https://github.com/cloudflare/kumo
 
 Turn Figma designs into pixel-perfect code: https://www.framelink.ai
 
+How to build an AI Markdown renderer: https://tigerabrodi.blog/how-to-build-a-performant-ai-markdown-renderer
+
 ---
 
 ## React ecosystem

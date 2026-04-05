@@ -310,6 +310,12 @@ People also made their own skills collections:
 - https://github.com/addyosmani/agent-skills
 - https://github.com/MiniMax-AI/skills
 
+CN flavor:
+
+- https://github.com/tanweai/pua
+- https://github.com/cft0808/edict
+- https://github.com/titanwings/colleague-skill
+
 ### Copilot CLI
 
 GitHub Copilot CLI is the terminal-native coding agent that brings the power of GitHub Copilot directly to your command line. It’s an autonomous coding agent that can plan complex tasks, execute multistep workflows, edit files, run tests, and iterate until the job is done. You choose how much control to keep, from approving every action to letting Copilot run fully autonomously.
