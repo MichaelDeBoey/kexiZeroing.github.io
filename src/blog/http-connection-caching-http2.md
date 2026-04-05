@@ -170,6 +170,46 @@ Users may think “refresh” always fetches new content, but unless it’s a ha
 
 A hard refresh means bypass the cache entirely, fetching both the main document and all subresources from the network. These requests typically include the header `Cache-Control: no-cache`. _(`no-cache` means force revalidation, `no-store` means bypass caching entirely)_
 
+### Preload images
+
+```js
+const imageEl = document.getElementById("imageEl");
+const url = "http://localhost:3000/image.png";
+
+// Pre-cache the image:
+const img = new Image();
+
+// By default, it'll have "low" priority:
+img.fetchPriority = "high";
+img.src = url;
+
+setTimeout(() => {
+  // instantly loads in due to it being cached already.
+  imageEl.src = url;
+  imageEl.style.display = "block";
+}, 2000);
+```
+
+In the Network tab, you'll see just one image request that fires on page load. The reason this works is because the fetched image is saved in the browser's HTTP cache after initial retrieval. HTTP is designed to cache as much as possible, so even if no `Cache-Control` is given, responses will get stored and reused if certain conditions are met. This is called heuristic caching.
+
+If the image comes back with a header `res.setHeader('Cache-Control', 'no-store')` that explicitly tells the browser to not cache it. Now, we see two requests to the same image.
+
+The browser has had a way to declaratively preload assets for almost a decade now.
+
+```js
+const link = document.createElement("link");
+link.rel = "preload";
+link.as = "image";
+link.href = "https://example.com/image.png";
+
+// To maintain "high" priority, we gotta set this:
+link.fetchPriority = "high";
+
+document.head.append(link);
+```
+
+This trick gets around the "no-store" problem because of where the asset is stored after being fetched. The HTTP cache is bypassed altogether. Instead, a designated "preload cache" is where it lives until needed. When it's time for the image to render, this is the first place that's checked, allowing it to pop right in.
+
 ### Freshness and Cache validation
 
 Before the expiration time, the resource is fresh; after the expiration time, the resource is stale. Stale responses are not immediately discarded. HTTP has a mechanism to transform a stale response into a fresh one by asking the origin server. This is called validation. Validation is done by using a conditional request that includes an `If-Modified-Since` or `If-None-Match` request header. The server will respond with `304 Not Modified` if the content has not changed. **Since this response only indicates "no change", there is no response body — there's just a status code — so the transfer size is extremely small.** The response can also include headers that update the expiration time of the cached resource.

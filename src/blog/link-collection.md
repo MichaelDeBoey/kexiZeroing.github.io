@@ -608,6 +608,12 @@ Browser automation CLI for AI agents: https://github.com/vercel-labs/agent-brows
 
 The official CLI for Resend: https://github.com/resend/resend-cli
 
+GitHub’s official command line tool: https://github.com/cli/cli
+
+Making ALL Software Agent-Native: https://github.com/HKUDS/CLI-Anything
+
+Make any website & tool your CLI: https://github.com/jackwener/opencli
+
 ---
 
 ## Machine Learning

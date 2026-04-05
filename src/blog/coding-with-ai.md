@@ -3,7 +3,7 @@ title: "Coding with AI"
 description: ""
 added: "May 27 2025"
 tags: [AI]
-updatedDate: "Mar 8 2026"
+updatedDate: "Apr 5 2026"
 ---
 
 ## Get Started with Cursor
@@ -358,23 +358,28 @@ Claude Code is an agentic command line tool that lives in your terminal, underst
 
 Read more at https://adocomplete.com/advent-of-claude-2025
 
-| Command   | Description                         |
-| --------- | ----------------------------------- |
-| !command  | Execute bash immediately            |
-| Esc Esc   | Rewind conversation/code            |
-| Ctrl+R    | Reverse search history              |
-| Ctrl+S    | Stash current prompt                |
-| Shift+Tab | Toggle plan mode                    |
-| Ctrl+O    | Toggle verbose mode                 |
-| /init     | Generate CLAUDE.md for your project |
-| /context  | View token consumption              |
-| /stats    | View your usage statistics          |
-| /usage    | Check rate limits                   |
-| /config   | Open configuration                  |
-| /hooks    | Configure lifecycle hooks           |
-| /sandbox  | Set permission boundaries           |
-| /export   | Export conversation to markdown     |
-| /resume   | Resume a past session               |
+| Command         | Description                            |
+| --------------- | -------------------------------------- |
+| !command        | Execute bash immediately               |
+| !command Ctrl+B | Background a long-running process      |
+| Esc Esc         | Rewind conversation/code               |
+| Ctrl+R          | Reverse search history                 |
+| Ctrl+S          | Stash current prompt                   |
+| Shift+Tab       | Toggle plan mode                       |
+| Ctrl+O          | Toggle verbose mode                    |
+| /init           | Generate CLAUDE.md for your project    |
+| /terminal-setup | Configure Option+Enter for newlines    |
+| /model          | Switch the active model                |
+| /context        | View token consumption breakdown       |
+| /clear          | Wipe chat history and context window   |
+| /ide            | Connect to VS Code extension           |
+| /stats          | View your usage statistics             |
+| /usage          | Check subscription usage / rate limits |
+| /config         | Open configuration                     |
+| /hooks          | Configure lifecycle hooks              |
+| /sandbox        | Set permission boundaries              |
+| /export         | Export conversation to markdown        |
+| /resume         | Resume a past session                  |
 
 ### Create custom subagents
 
@@ -434,6 +439,12 @@ Plugins extend Claude Code with skills, agents, hooks, and MCP servers. Plugin m
 > Another workaround is to create symbolic link `CLAUDE.md` that refers to `AGENTS.md` using `ln` command.
 >
 > Similarly, the `.agents/skills/` path is part of the Agent Skills open standard which is a cross-tool standard, but Claude Code uses its own `.claude/` directory structure, not `.agents/`.
+
+### Auto mode
+
+Auto mode provides a safer long-running alternative to `--dangerously-skip-permissions`. It is a middle path that lets you run longer tasks with fewer interruptions while introducing less risk than skipping all permissions. Before each tool call runs, a classifier reviews it to check for potentially destructive actions like mass deleting files, sensitive data exfiltration, or malicious code execution.
+
+Run `claude --enable-auto-mode` to enable auto mode, then cycle to it with Shift+Tab. On Desktop and in the VS Code extension, first toggle auto mode on in Settings -> Claude Code, then select it from the permission mode drop-down in a session.
 
 ## Gemini CLI
 
