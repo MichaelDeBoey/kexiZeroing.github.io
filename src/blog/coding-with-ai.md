@@ -3,7 +3,7 @@ title: "Coding with AI"
 description: ""
 added: "May 27 2025"
 tags: [AI]
-updatedDate: "Apr 5 2026"
+updatedDate: "Apr 6 2026"
 ---
 
 ## Get Started with Cursor
@@ -363,7 +363,7 @@ Claude Code is an agentic command line tool that lives in your terminal, underst
 - It offers IDE integrations, allowing you to use Claude Code directly from your preferred development environment.
 - It is also available as a tab within the Claude Desktop application, providing a graphical interface.
 
-Read more at https://adocomplete.com/advent-of-claude-2025
+Read more at https://adocomplete.com/advent-of-claude-2025, https://github.com/wesammustafa/Claude-Code-Everything-You-Need-to-Know, https://awesomeclaude.ai
 
 | Command         | Description                            |
 | --------------- | -------------------------------------- |
@@ -387,6 +387,13 @@ Read more at https://adocomplete.com/advent-of-claude-2025
 | /sandbox        | Set permission boundaries              |
 | /export         | Export conversation to markdown        |
 | /resume         | Resume a past session                  |
+
+### Long-running autonomous agents
+
+- https://www.aihero.dev/getting-started-with-ralph
+- https://github.com/anthropics/claude-code/tree/main/plugins/ralph-wiggum
+- https://www.reddit.com/r/vibecoding/comments/1ql7pbs/how_do_people_leave_agents_coding_overnight
+- https://github.com/agrimsingh/ralph-wiggum-cursor
 
 ### Create custom subagents
 

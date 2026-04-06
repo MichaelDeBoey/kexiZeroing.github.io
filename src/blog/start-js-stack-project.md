@@ -360,6 +360,8 @@ A design system is an ever evolving collection of reusable components, guided by
 
 - GOV.UK Design System: https://design-system.service.gov.uk
 
+`DESIGN.md` is a new concept introduced by Google Stitch. A plain-text design system document that AI agents read to generate consistent UI. It's just a markdown file. Copy a `DESIGN.md` into your project, tell your AI agent "build me a page that looks like this" and get pixel-perfect UI that actually matches. https://github.com/VoltAgent/awesome-design-md
+
 ## Set up Prettier and ESLint
 
 Install `Prettier` and `ESLint` VSCode plugins and enable `format on save` in settings (execute `save without formatting` command to disable). If you don't see the code formatted automatically on file save then it might be because you have multiple formatters installed in VS Code. Set `Format Document With...` and choose prettier to get it working.
