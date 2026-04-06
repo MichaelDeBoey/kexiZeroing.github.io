@@ -315,6 +315,7 @@ CN flavor:
 - https://github.com/tanweai/pua
 - https://github.com/cft0808/edict
 - https://github.com/titanwings/colleague-skill
+- https://github.com/alchaincyf/nuwa-skill
 
 ### Copilot CLI
 
