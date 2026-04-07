@@ -3,7 +3,7 @@ title: "Coding with AI"
 description: ""
 added: "May 27 2025"
 tags: [AI]
-updatedDate: "Apr 6 2026"
+updatedDate: "Apr 7 2026"
 ---
 
 ## Get Started with Cursor
@@ -198,6 +198,21 @@ You can discover and install prebuilt plugins on the [Cursor Marketplace](https:
 - https://cursor.com/marketplace/figma
 - https://cursor.com/marketplace/glean
 
+### Cursor 3
+
+https://cursor.com/blog/cursor-3
+
+The Agents Window is Cursor's agent-first interface. It provides a unified workspace to build with agents across repos and environments. If you're in the editor, type `Cmd+Shift+P → Open Agents Window` to open the Agents Window. To return to the classic Cursor editor, type
+`Cmd+Shift+P → Open Editor Window`.
+
+All local and cloud agents appear in the sidebar, including the ones you kick off from mobile, web, desktop, Slack, GitHub, and Linear.
+
+Cloud agents produce demos and screenshots of their work for you to verify. This is the same experience you get at [cursor.com/agents](https://cursor.com/agents), now integrated into the desktop app.
+
+Move an agent session from cloud to local when you want to make edits and test it on your own desktop. In the reverse direction, you can move an agent session from local to cloud to keep it running while you're offline, or so that you can move on to the next task.
+
+The new diffs view allows you to edit and review changes faster with a simpler UI. When you're ready, you can stage, commit, and manage PRs.
+
 ## GitHub Copilot
 
 ### Coding agent and agent mode
@@ -388,13 +403,6 @@ Read more at https://adocomplete.com/advent-of-claude-2025, https://github.com/w
 | /export         | Export conversation to markdown        |
 | /resume         | Resume a past session                  |
 
-### Long-running autonomous agents
-
-- https://www.aihero.dev/getting-started-with-ralph
-- https://github.com/anthropics/claude-code/tree/main/plugins/ralph-wiggum
-- https://www.reddit.com/r/vibecoding/comments/1ql7pbs/how_do_people_leave_agents_coding_overnight
-- https://github.com/agrimsingh/ralph-wiggum-cursor
-
 ### Create custom subagents
 
 Subagents are specialized AI assistants that handle specific types of tasks. Each subagent runs in its own context window with a custom system prompt, specific tool access, and independent permissions. When Claude encounters a task that matches a subagent’s description, it delegates to that subagent, which works independently and returns results.
@@ -459,6 +467,48 @@ Plugins extend Claude Code with skills, agents, hooks, and MCP servers. Plugin m
 Auto mode provides a safer long-running alternative to `--dangerously-skip-permissions`. It is a middle path that lets you run longer tasks with fewer interruptions while introducing less risk than skipping all permissions. Before each tool call runs, a classifier reviews it to check for potentially destructive actions like mass deleting files, sensitive data exfiltration, or malicious code execution.
 
 Run `claude --enable-auto-mode` to enable auto mode, then cycle to it with Shift+Tab. On Desktop and in the VS Code extension, first toggle auto mode on in Settings -> Claude Code, then select it from the permission mode drop-down in a session.
+
+### Long-running autonomous agents
+
+- https://www.aihero.dev/getting-started-with-ralph
+- https://github.com/anthropics/claude-code/tree/main/plugins/ralph-wiggum
+- https://www.reddit.com/r/vibecoding/comments/1ql7pbs/how_do_people_leave_agents_coding_overnight
+- https://github.com/agrimsingh/ralph-wiggum-cursor
+
+```sh
+# https://www.youtube.com/watch?v=_IK18goX4X8
+# https://github.com/mattpocock/course-video-manager/blob/main/plans/ralph.sh
+set -e
+
+if [ -z "$1" ]; then
+  echo "Usage: $0 <iterations>"
+  exit 1
+fi
+
+for ((i=1; i<=$1; i++)); do
+  echo "Iteration $i"
+  echo "--------------------------------"
+  result=$(claude --permission-mode acceptEdits -p "@plans/prd.json @progress.txt \
+1. Find the highest-priority feature to work on and work only on that feature. \
+This should be the one YOU decide has the highest priority - not necessarily the first in the list. \
+2. Check that the types check via npm run typecheck and that the tests pass via npm run test. \
+3. Update the PRD with the work that was done. \
+4. Append your progress to the progress.txt file. \
+Use this to leave a note for the next person working in the codebase. \
+5. Make a git commit of that feature. \
+ONLY WORK ON A SINGLE FEATURE. \
+If, while implementing the feature, you notice the PRD is complete, output <promise>COMPLETE</promise>. \
+")
+
+  echo "$result"
+
+  if [[ "$result" == *"<promise>COMPLETE</promise>"* ]]; then
+    echo "PRD complete, exiting."
+    tt notify "CVM PRD complete after $i iterations"
+    exit 0
+  fi
+done
+```
 
 ## Gemini CLI
 
