@@ -468,6 +468,16 @@ Auto mode provides a safer long-running alternative to `--dangerously-skip-permi
 
 Run `claude --enable-auto-mode` to enable auto mode, then cycle to it with Shift+Tab. On Desktop and in the VS Code extension, first toggle auto mode on in Settings -> Claude Code, then select it from the permission mode drop-down in a session.
 
+| Mode                    | Settings key        | Behavior |
+|-------------------------|--------------------|----------|
+| Ask permissions         | default            | Claude asks before editing files or running commands. You see a diff and can accept or reject each change. |
+| Auto accept edits       | acceptEdits        | Claude auto-accepts file edits but still asks before running terminal commands. |
+| Plan mode               | plan               | Claude analyzes your code and creates a plan without modifying files or running commands. |
+| Auto                    | auto               | Claude executes all actions with background safety checks that verify alignment with your request. Reduces permission prompts while maintaining oversight. |
+| Bypass permissions      | bypassPermissions  | Claude runs without any permission prompts, equivalent to `--dangerously-skip-permissions` in the CLI. Enable in your Settings → Claude Code under “Allow bypass permissions mode”. Only use this in sandboxed containers or VMs. Enterprise admins can disable this option. |
+
+The `dontAsk` permission mode is available only in the CLI. Enterprise admins can restrict which permission modes are available. 
+
 ### Long-running autonomous agents
 
 - https://www.aihero.dev/getting-started-with-ralph
