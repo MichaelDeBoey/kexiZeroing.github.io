@@ -8,32 +8,13 @@ updatedDate: "Apr 7 2026"
 
 ## Get Started with Cursor
 
-Migrate VS Code settings:
-
-1. `Cmd + Shift + P` and type Cursor Settings (or `Cmd + Shift + J` to open Cursor settings)
-2. Navigate to General > Account
-3. Under “VS Code Import”, click the Import button
-
-This will transfer your Extensions, Themes, Settings, Keybindings. You can see all keyboard shortcuts by pressing `Cmd + R` then `Cmd + S`.
-
-We made Activity Bar Orientation horizontal by default. If you prefer vertical:
-
-1. `Cmd + Shift + P` -> Preferences: Open Settings (UI)
-2. Search for `workbench.activityBar.orientation` and set it to `vertical`
-
 Start exploring Cursor’s AI-powered features:
 
 - Tab: Press `Tab` for intelligent code completions
 - CMD-K: Use `Cmd + K` for inline code edits
 - Chat: Use `Cmd + I` to open the unified AI interface with Ask, Edit, and Agent modes
-  ​
-  Cursor lets you input your own API keys for various LLM providers to send as many AI messages as you want at your own cost. To use your own API key, go to Cursor Settings > Models and enter your API keys.
 
 To view your current usage, you can visit the dashboard at [cursor.com/dashboard](https://www.cursor.com/dashboard)
-
-### Tab
-
-Cursor Tab is our native autocomplete feature. You can accept a suggestion by pressing `Tab`, or reject it by pressing `Esc`.
 
 ### Chat (Cmd + I)
 
@@ -46,14 +27,6 @@ Agent is the default and most autonomous mode in Cursor, designed to handle comp
 Ask is a “read-only” mode for the Chat made to ask questions, explore, and learn about a codebase. It is a built-in mode in Cursor that has search tools enabled by default.
 
 Manual mode is designed for making targeted code modifications when you know exactly what changes are needed and where. To make use of Manual mode, you need to explicitly mention the files you want to edit using the `@` symbol. _e.g. “In @src/utils/helpers.ts and @src/components/UserProfile.tsx, rename the function `getUserData` to `fetchUserProfile` and update all call sites within these files.”_
-
-### Inline Edit (Cmd + K)
-
-We call the bar that appears when you press `Cmd + K` the “Prompt Bar”. It works similarly to the AI input box for chat, in which you can type normally, or use `@` symbols to reference other context.
-
-If no code is selected when you press `Cmd + K`, Cursor will generate new code based on the prompt you type in the prompt bar. For in-place edits, you can simply select the code you want to edit and type into the prompt bar.
-
-When your changes might affect multiple files or you need more advanced capabilities, use `Cmd + L` to send your selected code to the Agent. This seamlessly transitions your work to Chat mode.
 
 ### Context
 
@@ -468,15 +441,15 @@ Auto mode provides a safer long-running alternative to `--dangerously-skip-permi
 
 Run `claude --enable-auto-mode` to enable auto mode, then cycle to it with Shift+Tab. On Desktop and in the VS Code extension, first toggle auto mode on in Settings -> Claude Code, then select it from the permission mode drop-down in a session.
 
-| Mode                    | Settings key        | Behavior |
-|-------------------------|--------------------|----------|
-| Ask permissions         | default            | Claude asks before editing files or running commands. You see a diff and can accept or reject each change. |
-| Auto accept edits       | acceptEdits        | Claude auto-accepts file edits but still asks before running terminal commands. |
-| Plan mode               | plan               | Claude analyzes your code and creates a plan without modifying files or running commands. |
-| Auto                    | auto               | Claude executes all actions with background safety checks that verify alignment with your request. Reduces permission prompts while maintaining oversight. |
-| Bypass permissions      | bypassPermissions  | Claude runs without any permission prompts, equivalent to `--dangerously-skip-permissions` in the CLI. Enable in your Settings → Claude Code under “Allow bypass permissions mode”. Only use this in sandboxed containers or VMs. Enterprise admins can disable this option. |
+| Mode               | Settings key      | Behavior                                                                                                                                                                                                                                                                     |
+| ------------------ | ----------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Ask permissions    | default           | Claude asks before editing files or running commands. You see a diff and can accept or reject each change.                                                                                                                                                                   |
+| Auto accept edits  | acceptEdits       | Claude auto-accepts file edits but still asks before running terminal commands.                                                                                                                                                                                              |
+| Plan mode          | plan              | Claude analyzes your code and creates a plan without modifying files or running commands.                                                                                                                                                                                    |
+| Auto               | auto              | Claude executes all actions with background safety checks that verify alignment with your request. Reduces permission prompts while maintaining oversight.                                                                                                                   |
+| Bypass permissions | bypassPermissions | Claude runs without any permission prompts, equivalent to `--dangerously-skip-permissions` in the CLI. Enable in your Settings → Claude Code under “Allow bypass permissions mode”. Only use this in sandboxed containers or VMs. Enterprise admins can disable this option. |
 
-The `dontAsk` permission mode is available only in the CLI. Enterprise admins can restrict which permission modes are available. 
+The `dontAsk` permission mode is available only in the CLI. Enterprise admins can restrict which permission modes are available.
 
 ### Long-running autonomous agents
 
