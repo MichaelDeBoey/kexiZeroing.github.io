@@ -3,7 +3,7 @@ title: "Coding with AI"
 description: ""
 added: "May 27 2025"
 tags: [AI]
-updatedDate: "Apr 7 2026"
+updatedDate: "Apr 11 2026"
 ---
 
 ## Get Started with Cursor
@@ -288,6 +288,7 @@ Three-level loading pattern to manage context efficiently (progressive disclosur
 - npx skills add addyosmani/web-quality-skills
 - npx skills add clerk/skills
 - npx skills add shadcn/ui
+- npx skills add JuliusBrussee/caveman
 
 People also made their own skills collections:
 
@@ -408,11 +409,11 @@ When invoked:
 
 Plugins extend Claude Code with skills, agents, hooks, and MCP servers. Plugin marketplaces are catalogs that help you discover and install these extensions without building them yourself.
 
-```sh
-# Install a plugin from the official marketplace
-/plugin install plugin-name@claude-plugins-official
+Type `/plugin` and go to the Discover tab, you can see plugins like frontend-design, superpowers, context7, playwright, etc. You can browse the full catalog at [claude.com/plugins](https://claude.com/plugins) and the [official repo](https://github.com/anthropics/claude-plugins-official/tree/main/plugins) before opening your terminal. For community plugins that aren't in the official marketplace, add the marketplace first.
 
+```sh
 # Register the marketplace first
+# /plugin marketplace add owner/repo
 /plugin marketplace add obra/superpowers-marketplace
 # Then install the plugin from this marketplace
 /plugin install superpowers@superpowers-marketplace
