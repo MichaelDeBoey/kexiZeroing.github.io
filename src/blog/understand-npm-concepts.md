@@ -229,7 +229,7 @@ You can configure npm to resolve your dependencies across multiple registries.
 # fix a bug in one of your dependencies
 vim node_modules/some-package/brokenFile.js
 
-# it will create a folder called `patches` in the root dir of your app. 
+# it will create a folder called `patches` in the root dir of your app.
 # Inside will be a `.patch` file, which is a diff between normal old package and your fixed version
 npx patch-package some-package
 
@@ -244,6 +244,24 @@ git commit -m "fix brokenFile.js in some-package"
   "postinstall": "patch-package"
 }
 ```
+
+### simplest supply chain defense
+
+Minimum Release Age is an underrated supply chain defense.
+
+```sh
+# .npmrc
+min-release-age=7
+
+# pnpm-workspace.yaml
+minimumReleaseAge: 10080 # 7 days in minutes
+
+# bunfig.toml
+[install]
+minimumReleaseAge = 604800 # 7 days in seconds
+```
+
+The package manager simply refuses to install any package version that was published less than 7 days ago. By the time 7 days pass, compromised versions are detected, reported, and pulled from the registry.
 
 ### npm and npx
 
@@ -380,7 +398,7 @@ To add a local dependency within a monorepo, in your `package.json` "dependencie
 
 ```sh
 # Development dependencies for the workspace root
-# Adding a new dependency to the root workspace package fails, 
+# Adding a new dependency to the root workspace package fails,
 # unless the `--ignore-workspace-root-check` or `-w` flag is used.
 pnpm add -Dw typescript @types/node eslint
 
@@ -421,6 +439,7 @@ npm scripts are a set of built-in and custom scripts defined in the `package.jso
   }
   ```
 - You can run `npm config ls -l` to get a list of the configuration parameters, and you can use `$npm_config_` prefix (like `$npm_config_editor`) to access them in the scripts. Any key-value pairs we add to our script will be translated into an environment variable with the `npm_config` prefix.
+
   ```json
   {
     "scripts": {
@@ -431,7 +450,9 @@ npm scripts are a set of built-in and custom scripts defined in the `package.jso
   // Output: "Hello Paula"
   npm run hello --firstname=Paula
   ```
+
 - `package.json` properties are available via `process.env` (with `npm_package_` prefix) in Node scripts by default.
+
   ```js
   {
     "name": "foo",
@@ -442,6 +463,7 @@ npm scripts are a set of built-in and custom scripts defined in the `package.jso
   // Output: 'foo', '1.2.5'
   console.log(process.env.npm_package_name, process.env.npm_package_version);
   ```
+
 - Passing arguments to other npm scripts, we can leverage the `--` separator. e.g. `"pass-flags-to-other-script": "npm run my-script -- --watch"` will pass the `--watch` flag to the `my-script` command.
 - One convention that you may have seen is using a prefix and a colon to group scripts, for example `build:dev` and `build:prod`. This can be helpful to create groups of scripts that are easier to identify by their prefixes.
 - [shx](https://github.com/shelljs/shx) is a wrapper around ShellJS Unix commands, providing an easy solution for simple Unix-like, cross-platform commands in npm package scripts. ShellJS is a portable (Windows/Linux/macOS) implementation of Unix shell commands on top of the Node.js API. `shx` is good for writing one-off commands in npm package scripts (e.g. `"clean": "shx rm -rf out/"`). Run `npm install shx --save-dev` to install it, and run command in either a Unix or Windows command line.

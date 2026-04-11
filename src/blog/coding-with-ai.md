@@ -253,6 +253,7 @@ You can write your own skills, or use skills shared by others, such as those in 
 
 - https://skills.sh
 - https://github.com/anthropics/skills/tree/main/skills
+- https://github.com/openai/skills
 - https://github.com/github/awesome-copilot/tree/main/skills
 - https://github.com/mgechev/skills-best-practices
 
