@@ -610,6 +610,8 @@ One CLI for all of Google Workspace: https://github.com/googleworkspace/cli
 
 Browser automation CLI for AI agents: https://github.com/vercel-labs/agent-browser
 
+CLI to control iOS and Android devices for AI agents: https://github.com/callstackincubator/agent-device
+
 The official CLI for Resend: https://github.com/resend/resend-cli
 
 GitHub’s official command line tool: https://github.com/cli/cli

@@ -1,7 +1,6 @@
-import React from "react";
 // May change importing a css file to using css-in-js or tailwind directly later...
-import "./style.css";
 import Confetti from "react-confetti";
+import "./style.css";
 
 // Inspired by https://linknode.vercel.app
 const MobileMockup = () => {
@@ -46,6 +45,10 @@ const MobileMockup = () => {
             <p>
               - The answer was not the point. The answer was never the point. The process of searching is the process of
               learning.
+            </p>
+            <p>
+              - Software engineers don't get paid to write code; they get paid to solve problems. The faster you realize
+              this, the sooner you'll stop being afraid that AI will replace you and the better your career will be.
             </p>
           </div>
         </main>

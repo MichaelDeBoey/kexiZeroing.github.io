@@ -139,10 +139,10 @@ videoTag.src = url;
 
 // 1. add source buffers
 const audioSourceBuffer = myMediaSource.addSourceBuffer(
-  'audio/mp4; codecs="mp4a.40.2"'
+  'audio/mp4; codecs="mp4a.40.2"',
 );
 const videoSourceBuffer = myMediaSource.addSourceBuffer(
-  'video/mp4; codecs="avc1.64001e"'
+  'video/mp4; codecs="avc1.64001e"',
 );
 
 // 2. download and add our audio/video to the SourceBuffers
@@ -194,11 +194,11 @@ fetchSegment("http://server.com/audio/segment0.mp4")
   });
 
 // same thing for video segments
-fetchSegment("http://server.com/video/segment0.mp4").then(function (
-  videoSegment0
-) {
-  videoSourceBuffer.appendBuffer(videoSegment0);
-});
+fetchSegment("http://server.com/video/segment0.mp4").then(
+  function (videoSegment0) {
+    videoSourceBuffer.appendBuffer(videoSegment0);
+  },
+);
 ```
 
 Many video players have an “auto quality” feature, where the quality is automatically chosen depending on the user’s network and processing capabilities. This behavior is also enabled thanks to the concept of media segments. On the server-side, the segments are actually encoded in multiple qualities, and a web player will then automatically choose the right segments to download as the network or CPU conditions change.
@@ -275,6 +275,30 @@ GET /video/720p/segment2.mp4
 ```
 
 > A regular MP4 video usually has a single _moov_ chunk describing the video and a single _mdat_ chunk containing the video. You wouldn’t be able to play a part of the video without having access to the whole video. Fragmented MP4 solves this issue, allowing us to split an MP4 video into segments. The first initialization segment contains the chunk describing the video. What follows are the media segments, each having a separate chunks containing a portion of the video which can be played on its own.
+
+## Hotlink Protection
+
+Hotlinking happens when someone embeds your hosted files (images, videos, PDFs, etc.) on their site by linking directly to your URL.
+
+- Bandwidth cost — You’re paying for traffic from someone else’s site.
+- Performance impact — Your server handles more requests than it should.
+- Security concerns — In some cases, files could be linked for malicious purposes.
+
+Hotlink protection typically checks the `Referer` HTTP header to see which page requested the file. Most CDNs have a “Hotlink Protection” toggle that works by automatically checking the referrer before serving assets.
+
+You have a video on a server. You want users to watch it. But you do not want them to download it or share direct links.
+
+Signed URLs:\
+Instead of letting users access videos directly by a fixed URL, you generate a temporary, signed URL that includes an expiry timestamp, and signed with a secret key. (`https://cdn.yourdomain.com/video.mp4?expires=1723119800&signature=4d2f0d1a...`) When someone requests this URL the CDN checks: is the expiry time still in the future? Does the signature match? If anything is wrong or expired it rejects the request.
+
+For adaptive streaming:\
+The `.m3u8` playlist URL is signed and expires quickly. Each media chunk request is also signed, and the chunk URLs will expire quickly.
+
+- Playlist URL is signed. Expires in minutes.
+- Each chunk URL inside the playlist is signed. Expires in seconds.
+- Each user gets a different set of URLs. Generated fresh for their session.
+
+> Can someone still download the video? Yes. Tools like [yt-dlp](https://github.com/yt-dlp/yt-dlp) can automate the process. They fetch the playlist and all chunks fast enough before they expire. Then stitch the chunks back together.
 
 ## Video Glossary
 

@@ -212,3 +212,11 @@ const clone = React.cloneElement(child, templateProps);
 ## The library
 
 The library that implements this fully is [shimmer-from-structure](https://github.com/darula-hpp/shimmer-from-structure). It handles the edge cases, plus configurable shimmer colors, animation duration, and a provider API for app-wide defaults. Built for React, Vue, Angular, Svelte and SolidJS.
+
+[Boneyard](https://github.com/0xGF/boneyard) is another package that snapshots your real UI and captures a flat list of skeleton “bones” that mirror the page exactly. No guessing. No measuring. It generates skeletons at build time — not at runtime. Here's the three-step flow:
+
+1. Wrap your component with `<Skeleton name="blog-card" loading={isLoading}>`. When `loading` is false, your children render normally.
+
+2. Run `npx boneyard-js build`. This launches a headless browser via Playwright, visits your running app at multiple breakpoints, and calls `getBoundingClientRect()` on every visible element inside each named `<Skeleton>`. The exact pixel positions, sizes, and border radii are written to `.bones.json` files and a `registry.js` that maps each skeleton name to its bones. Subsequent builds are incremental — only changed components are recaptured. Customize breakpoints and defaults with `boneyard.config.json`.
+
+3. Import the generated registry once in your app entry. When `loading` is true, boneyard looks up the pre-generated bones by name and renders them as gray rectangles — each one an absolutely positioned div matching the exact position from the real layout. When loading becomes false, your children replace the skeleton with zero layout shift.

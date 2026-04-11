@@ -323,6 +323,19 @@ The pre-commit hook can be used to run tests, lint, type check, etc. The hooks a
 
 [degit](https://github.com/Rich-Harris/degit) makes copies of git repositories. When you run `degit some-user/some-repo`, it will find the latest commit and download the associated tar file if it doesn't exist locally. This is much quicker than using `git clone`, because you're not downloading the entire git history.
 
+## Diagnostic picture of the project
+
+```sh
+# The 10 most-changed files in the last year.
+git log --format=format: --name-only --since="1 year ago" | sort | uniq -c | sort -nr | head -10
+
+# Every contributor ranked by commit count.
+git shortlog -sn --no-merges
+
+# Revert and hotfix frequency.
+git log --oneline --since="1 year ago" | grep -iE 'revert|hotfix|emergency|rollback'
+```
+
 ## gitignore
 
 - https://gitignore.io/

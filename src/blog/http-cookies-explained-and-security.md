@@ -81,9 +81,9 @@ These attacks are possible because web browsers send authentication tokens autom
 ```html
 <h1>Congratulations! You're a Winner!</h1>
 <form action="http://good-banking-site.com/api/account" method="post">
-  <input type="hidden" name="Transaction" value="withdraw">
-  <input type="hidden" name="Amount" value="1000000">
-  <input type="submit" value="Click to collect your prize!">
+  <input type="hidden" name="Transaction" value="withdraw" />
+  <input type="hidden" name="Amount" value="1000000" />
+  <input type="submit" value="Click to collect your prize!" />
 </form>
 ```
 
@@ -163,22 +163,6 @@ The CSP `frame-ancestors` directive specifies valid parents that may embed a pag
 > Example error message in the browser console when an iframe is blocked by CSP:
 >
 > Refused to frame 'https://example.com/' because an ancestor violates the following Content Security Policy directive: "frame-ancestors https://parent1.com https://parent2.com".
-
-#### Hotlink Protection
-
-Hotlinking happens when someone embeds your hosted files (images, videos, PDFs, etc.) on their site by linking directly to your URL.
-
-- Bandwidth cost — You’re paying for traffic from someone else’s site.
-- Performance impact — Your server handles more requests than it should.
-- Security concerns — In some cases, files could be linked for malicious purposes.
-
-Hotlink protection typically checks the `Referer` HTTP header to see which page requested the file. Most CDNs have a “Hotlink Protection” toggle that works by automatically checking the referrer before serving assets.
-
-Signed URLs:\
-Instead of letting users access videos directly by a fixed URL, you generate a temporary, signed URL that includes an expiry timestamp, and signed with a secret key. (`https://cdn.yourdomain.com/video.mp4?expires=1723119800&signature=4d2f0d1a...`)
-
-For adaptive streaming:\
-The `.m3u8` playlist URL is signed and expires quickly. Each media chunk request is also signed, and the chunk URLs will expire quickly.
 
 ### Handling Cross-Domain Cookies in iframes
 
