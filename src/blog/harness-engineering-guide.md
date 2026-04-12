@@ -14,7 +14,7 @@ Harness engineering keeps coming up in conversations, yet most of us encounter i
 - https://www.reddit.com/r/vibecoding/comments/1ql7pbs/how_do_people_leave_agents_coding_overnight
 - https://github.com/agrimsingh/ralph-wiggum-cursor
 
-Ralph is a technique for autonomous AI development that treats LLM context like memory: `while :; do cat PROMPT.md | agent ; done` The same prompt is fed repeatedly to an AI agent. Progress persists in files and git, not in the LLM's context window. When context fills up, you get a fresh agent with fresh context.
+Ralph is a technique for autonomous AI development that treats LLM context like memory: `while :; do cat PROMPT.md | agent ; done` The same prompt is fed repeatedly to an AI agent. Progress persists in files, not in the LLM's context window. When context fills up, you get a fresh agent with fresh context.
 
 ```sh
 # https://www.youtube.com/watch?v=_IK18goX4X8
@@ -44,8 +44,7 @@ If, while implementing the feature, you notice the PRD is complete, output <prom
   echo "$result"
 
   if [[ "$result" == *"<promise>COMPLETE</promise>"* ]]; then
-    echo "PRD complete, exiting."
-    tt notify "CVM PRD complete after $i iterations"
+    echo "PRD complete after $i iterations, exiting."
     exit 0
   fi
 done
