@@ -6,7 +6,7 @@ tags: [web]
 updatedDate: "July 22 2023"
 ---
 
-> 将早期工作刚接触 Web 开发不久时的笔记（原先记录在印象笔记）中有价值的部分提炼出来，记录在这里成为一篇文章，值得纪念。
+> 将早期工作刚接触 Web 开发不久时的笔记中有价值的部分提炼出来，记录在这里成为一篇文章，值得纪念。
 
 每台开发机都是一个完整的环境，包括了 nginx, redis 等，即本地拥有服务器。
 
@@ -30,15 +30,148 @@ Web server（如 nginx）只是内容的分发者。比如，请求 `/index.html
 >
 > In addition, if there is a certificate warning, it is a name mismatch error, which indicates that the domain name in the SSL certificate does not match the URL/address used to access the web server.
 
-关于 URL Rewrite：
+### URL Rewrite
 
 - `abc.com/show_a_product.php?product_id=7`
 - `abc.com/products/7/`
 
 The problem with the first URL structure is that it is not memorable, but you can tell from the second URL what you're likely to find on that page. Search engines can split that URL into words, and they can use that information to better determine the content of the page. Unfortunately, the second URL cannot be easily understood by a server without some work on our part. When a request is made for that URL, the server needs to work out how to process that URL so that it knows what to send back to the user. **URL rewriting** is a technique used to "translate" a URL like this into something the server can understand. We need to tell the server to internally redirect all requests for the URL "/products" to "show_a_product.php".
 
-关于单页应用无刷新更新 URL：
+### 关于单页应用无刷新更新 URL
 
 - 通过 URL 的 `#` 哈希片段实现路由切换。当哈希变化时，触发 `hashchange` 事件，动态更新页面内容。例如，导航链接通过修改哈希值（如 `<a href="#/home">`），在 JavaScript 中监听 `hashchange` 事件，根据 `location.hash` 的值使用 `switch` 语句匹配并渲染对应内容到指定容器。
 
 - 基于 History API 使用 HTML5 的 `history.pushState()` 和 `popstate` 事件实现。拦截 `<a>` 标签的默认跳转行为，通过 `history.pushState()` 修改 URL 并手动触发内容更新。页面首次加载或用户点击前进/后退按钮时，通过监听 `popstate` 事件，根据 `location.pathname` 渲染内容。现代框架默认使用 History 模式，开发者只需声明式配置路由，无需手动操作 `history.pushState()` 或监听 `popstate`。
+
+### 关于 SEO
+
+如果要做 SEO，就是每个详情页、每个分页、每个搜索结果都是一个新的页面，新的URL（不是query参数的变化）。对于详情页就是根据 URL 的不同，smarty 模板生成不同的数据（html代码）。对于列表搜索页，选项和分页都是跳新的页面，URL 发生变化，PHP 设置路由规则，调用同一个模板。模板中的数据也是通过 smarty 赋值，即这些链接是 smarty 解析后就确定的，不是 js 计算的。比如 `bj.fang.lianjia.com/loupan/pg3/` 代表楼盘列表的第三页（说链接是确定的，是因为这个时候它的上一页和下一页链接已经确定为 `/pg2/` 和 `/pg4/`，它们不是在 js 的点击事件中计算出的，而是smarty的数据确定的），再比如 `bj.fang.lianjia.com/loupan/haidian/` 代表楼盘列表的海淀选项。这样做搜索引擎可以追踪到更多的链接，抓到更多的页面。
+
+### 模板的使用
+
+```html
+<script type="text/template" id="noresultTpl">
+  <div class="no_result">
+    <div class="no_pic">
+      <img src="{fe static="/pc/asset/join/images/list_none.png"}">
+    </div>
+    <p>呣，没有对应<%= keyword %>结果，换个搜索条件吧</p>
+  </div>
+</script>
+
+// str 即为可以 append 进 DOM 的节点 var str =
+$.template($('#noresultTpl').html()).render({keyword: ''});
+```
+
+```js
+// Before: Global variables
+var myUtil = { doSomething: function () {} };
+
+// After: AMD modules
+define("myModule", ["dependency1", "dependency2"], function (dep1, dep2) {
+  return {
+    doSomething: function () {
+      dep1.action();
+      dep2.action();
+    },
+  };
+});
+
+// Usage
+require("myModule").doSomething();
+```
+
+### Server-side MVC
+
+```js
+/**
+ * Router - Maps URLs to controllers (actions) and views (models)
+ */
+
+module.exports = function (router) {
+  /**
+   * GET /browse - Browse documents
+   * Action: action/index.js → index()
+   * Model: model/index.js → getDocuments()
+   * View: page/index.tpl
+   */
+  router.route("/browse").get(router.action("index").browse);
+};
+
+/**
+ * Action Controller - Handles request logic
+ * File: server/action/index.js
+ */
+
+var model = require("../model/index");
+var docUtil = require("../libs/docUtil");
+
+exports.browse = function (req, res) {
+  // Get query parameters
+  var category = req.query.category || "hot";
+  var page = parseInt(req.query.page) || 1;
+  var pageSize = 20;
+
+  // Fetch data from model
+  model
+    .getDocuments({
+      category: category,
+      offset: (page - 1) * pageSize,
+      limit: pageSize,
+    })
+    .then(function (data) {
+      // Process data
+      var docs = data.documents.map(function (doc) {
+        return {
+          id: doc.id,
+          title: doc.title,
+          thumbnail: doc.thumb_url,
+          type: docUtil.fileType(doc.doc_type),
+          size: docUtil.fileSize(doc.file_size),
+          viewUrl: docUtil.viewUrl(doc.id, {
+            from: "browse",
+            category: category,
+          }),
+        };
+      });
+
+      // Render template with data
+      res.render("browse", {
+        documents: docs,
+        category: category,
+        page: page,
+        title: category + " Documents",
+        keywords: "documents, PDF, Word, " + category,
+      });
+    })
+    .catch(function (err) {
+      res.render("error", {
+        message: "Failed to load documents",
+        status: 500,
+      });
+    });
+};
+
+/**
+ * Model - Handles data fetching and caching
+ * File: server/model/index.js
+ */
+
+exports.getDocuments = function (opts) {
+  var cacheKey = "docs:" + opts.category + ":" + opts.offset;
+
+  // Check cache first
+  return cache.get(cacheKey).then(function (cached) {
+    if (cached) {
+      return JSON.parse(cached);
+    }
+
+    // Fetch from backend API
+    return docService.getDocuments(opts).then(function (data) {
+      // Cache for 1 hour
+      cache.set(cacheKey, JSON.stringify(data), 3600);
+      return data;
+    });
+  });
+};
+```
