@@ -453,48 +453,6 @@ Run `claude --enable-auto-mode` to enable auto mode, then cycle to it with Shift
 
 The `dontAsk` permission mode is available only in the CLI. Enterprise admins can restrict which permission modes are available.
 
-### Long-running autonomous agents
-
-- https://www.aihero.dev/getting-started-with-ralph
-- https://github.com/anthropics/claude-code/tree/main/plugins/ralph-wiggum
-- https://www.reddit.com/r/vibecoding/comments/1ql7pbs/how_do_people_leave_agents_coding_overnight
-- https://github.com/agrimsingh/ralph-wiggum-cursor
-
-```sh
-# https://www.youtube.com/watch?v=_IK18goX4X8
-# https://github.com/mattpocock/course-video-manager/blob/main/plans/ralph.sh
-set -e
-
-if [ -z "$1" ]; then
-  echo "Usage: $0 <iterations>"
-  exit 1
-fi
-
-for ((i=1; i<=$1; i++)); do
-  echo "Iteration $i"
-  echo "--------------------------------"
-  result=$(claude --permission-mode acceptEdits -p "@plans/prd.json @progress.txt \
-1. Find the highest-priority feature to work on and work only on that feature. \
-This should be the one YOU decide has the highest priority - not necessarily the first in the list. \
-2. Check that the types check via npm run typecheck and that the tests pass via npm run test. \
-3. Update the PRD with the work that was done. \
-4. Append your progress to the progress.txt file. \
-Use this to leave a note for the next person working in the codebase. \
-5. Make a git commit of that feature. \
-ONLY WORK ON A SINGLE FEATURE. \
-If, while implementing the feature, you notice the PRD is complete, output <promise>COMPLETE</promise>. \
-")
-
-  echo "$result"
-
-  if [[ "$result" == *"<promise>COMPLETE</promise>"* ]]; then
-    echo "PRD complete, exiting."
-    tt notify "CVM PRD complete after $i iterations"
-    exit 0
-  fi
-done
-```
-
 ## Gemini CLI
 
 Gemini CLI brings the capabilities of Gemini models to your terminal in an interactive Read-Eval-Print Loop (REPL) environment. Gemini CLI consists of a client-side application (`packages/cli`) that communicates with a local server (`packages/core`), which in turn manages requests to the Gemini API and its AI models. Gemini CLI also contains a variety of tools for tasks such as performing file system operations, running shells, and web fetching, which are managed by `packages/core`.
