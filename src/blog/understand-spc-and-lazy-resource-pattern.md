@@ -3,43 +3,190 @@ title: "Understand SPC pattern and lazy resource pattern"
 description: ""
 added: "Dec 26 2025"
 tags: [js, react]
-updatedDate: "Mar 9 2026"
+updatedDate: "Apr 13 2026"
 ---
 
 ## Store-Presenter-Component (SPC) Pattern
+
+In a typical React app, you'd put state, logic, and rendering in one component with `useState` + `useEffect`. If multiple components need the same data, you'd use a custom hook — but each hook call creates its own state copy. Three components = three `useState` = three separate API calls. You could fix this with Context, or React Query, or lifting state up. Here we chose a different path: pull the state out of React entirely. Put it in a plain class (the Store), make it observable with MobX, and let any component subscribe to it.
 
 SPC is a frontend architecture — a variant of Model-View-Presenter where:
 
 - Store: Observable data container. `@observable.ref` fields, `@computed` getters. No logic, no actions, no side effects.
 - Presenter: All business logic. `@action` methods mutate stores. Handles API calls, analytics, derived state. Dependencies injected via constructor.
 - Component: Pure functional React component. Receives data and callbacks as props. No MobX, no store/presenter awareness.
-- Factory (`create.tsx`): Wires store + presenter + component together. Wraps in `mobxReactLite.observer`.
+- Factory (`create.tsx`): Wires store + presenter + component together. Wraps in `mobxReactLite.observer` so MobX can track which observables are read during render and re-render when they change.
 
-Data flow is unidirectional:
+### The Three Pieces
 
-1. User interacts with Component (clicks, types, etc.)
-2. Component calls a callback (provided by Factory from Presenter)
-3. Presenter executes logic
-4. Presenter mutates Store via `@action` methods
-5. MobX notifies the `observer`-wrapped Component
-6. Component re-renders with new Store values
+**Store** can receive dependencies in the constructor and have complex `@computed` derivations. But they never do anything — they only hold and derive state.
 
-### Stores, Presenters, and Components
+```ts
+class ConversationStore {
+  constructor(
+    private readonly authSession: { userId: string },
+    private readonly offlineStatusStore: { status: 'online' | 'offline' },
+  ) {}
 
-Stores are pure data containers. They hold `@observable` state and optional `@computed` getters. They contain NO business logic, NO side effects, NO actions. Stores don't need their own unit tests — they're purely declarative. Test the Presenter that mutates them instead.
+  @observable.ref conversations: Conversation[] = [];
+  @observable.ref activeConversationId: string | undefined = undefined;
+  @observable.ref messages: Message[] = [];
+  @observable.ref isLoadingMessages: boolean = false;
 
-Presenters contain all business logic. They mutate stores via @action methods, derive data via @computed getters, and perform side effects like API calls and analytics. Presenters receive all dependencies through the constructor.
+  @computed get activeConversation(): Conversation | undefined {
+    return this.conversations.find(c => c.id === this.activeConversationId);
+  }
 
-Components are "dumb" functional React components. They receive data and callbacks as plain props and have NO knowledge of presenters, stores, or MobX. No direct imports of stores, presenters, or MobX. No API calls or analytics tracking.
+  @computed get canSend(): boolean {
+    return this.activeConversationId !== undefined
+      && this.offlineStatusStore.status === 'online';
+  }
+}
+```
 
-### Factories
+**Presenter** calls APIs, handles errors, writes results into the store via `@action` methods. Receives dependencies through the constructor. After `await`, mutations must be wrapped in `runInAction()` because the `@action` scope ends at the first `await`.
 
-Factories wire everything together. They instantiate stores and presenters, map store values and presenter methods to component props, and wrap in `mobxReactLite.observer`. Factories contain ONLY wiring logic. No business logic, no conditional rendering, no data fetching.
+```ts
+class ConversationPresenter {
+  constructor(
+    private readonly api: MessagingService,
+    private readonly errorService: ErrorService,
+  ) {}
 
-Install Functions vs. Create Functions:
+  @action
+  async openConversation(store: ConversationStore, conversationId: string) {
+    store.activeConversationId = conversationId;
+    store.isLoadingMessages = true;
 
-- Install functions have side effects and are called once. They might mutate configuration objects, register event listeners, or set up singletons.
-- Create functions are pure factories, callable multiple times. They instantiate objects without side effects.
+    try {
+      const response = await this.api.getMessages(conversationId);
+      runInAction(() => {
+        store.messages = response.messages;
+        store.isLoadingMessages = false;
+      });
+    } catch (e) {
+      runInAction(() => { store.isLoadingMessages = false; });
+      this.errorService.errorException(e);
+    }
+  }
+}
+```
+
+**Component** is a dumb functional React component. Receives data and callbacks as plain props. No MobX, no stores, no presenters, no API calls. Same input = same output.
+
+```tsx
+function ConversationList({ conversations, isLoading, onSelect }) {
+  if (isLoading) return <Spinner />;
+  return (
+    <ul>
+      {conversations.map(c => (
+        <li key={c.id} onClick={() => onSelect(c.id)}>{c.name}</li>
+      ))}
+    </ul>
+  );
+}
+```
+
+Something needs to connect store fields to component props, and presenter methods to component callbacks. That's the `create.tsx` — the factory:
+
+```ts
+function createConversationList(store, presenter) {
+  return observer(() => (
+    <ConversationList
+      conversations={store.conversations}
+      isLoading={store.isLoadingMessages}
+      onSelect={id => presenter.openConversation(store, id)}
+    />
+  ));
+}
+```
+
+Where does `messagingService` come from? It can't be imported globally — because in fake mode you want a `FakeMessagingService`, and in real mode you want the real one. So it must be passed in from above.
+
+```ts
+function installMessaging({ messagingService, errorService, headerController }) {
+  const store = new ConversationStore();
+  const presenter = new ConversationPresenter(store, messagingService, errorService);
+  const ConversationList = createConversationList(store, presenter);
+
+  // ... do something with ConversationList
+}
+```
+
+And who calls `installMessaging`? The page's `main.tsx`:
+
+```ts
+// main.tsx
+const bootstrap = getBootstrap();
+
+installMessaging({
+  messagingService: bootstrap.services.messagingService,  // real or fake, decided here
+  errorService: bootstrap.services.errorService,
+  headerController,
+});
+```
+
+### Questions to Consider
+
+Q: In a normal React app you'd just render `<ConversationList />` somewhere in your JSX tree. But this install function isn't a React component — it's a plain function called at startup. How does `ConversationList` get onto the screen?
+
+The install function mutates a config object that the shell gave it. The sidebar shell doesn't know what features exist. It just renders whatever is in its config slots. The messaging feature doesn't know what the sidebar looks like. It just fills slots.
+
+```ts
+function installMessaging({ messagingService, sidebarConfig, headerController }) {
+  const store = new ConversationStore();
+  const presenter = new ConversationPresenter(store, messagingService);
+  const ConversationList = createConversationList(store, presenter);
+
+  // Stuff it into someone else's config.
+  sidebarConfig.ConversationList = {
+    Button: observer(() => <ChatIcon count={store.totalUnread} />),
+    Panel: ConversationList,
+  };
+}
+```
+
+Q: What if a second feature — say, Contacts — also needs the conversations data? Not to display the list, but to show "last message" next to each contact name. How would you make conversations data available to the Contacts feature without exposing the store?
+
+Think about it from the outside. Contacts needs to read conversations but doesn't need to know about `ConversationStore` or `ConversationPresenter`.
+
+Step 1: Define what outsiders are allowed to see — the interface:
+
+```ts
+export interface MessagingController {
+  readonly conversations: ReadonlyArray<Conversation>;
+  readonly totalUnreadCount: number;
+  loadConversations(): Promise<void>;
+}
+```
+
+Step 2: The create function returns an object matching this interface, hiding everything:
+
+```ts
+function createMessagingController({ messagingService }): MessagingController {
+  const store = new ConversationStore();
+  const presenter = new ConversationPresenter(store, messagingService);
+
+  return {
+    get conversations() { return store.conversations; },
+    get totalUnreadCount() { return store.totalUnread; },
+    loadConversations() { return presenter.loadConversations(); },
+  };
+}
+```
+
+Step 3: Create it once, passes it to both features:
+
+```ts
+const messagingController = createMessagingController({ messagingService });
+
+installMessaging({ messagingController, sidebarConfig, headerController });
+installContacts({ messagingController, presenceController, sidebarConfig });
+```
+
+Q: You're debugging. You find this line in a factory: `messagingController.openConversation(conversationId)`. You cmd+click openConversation. Your editor jumps to the `interface MessagingController`, a type definition. Why can't you just cmd+click to the implementation?
+
+The interface and the implementation are in separate packages, and the consumer only imports the interface. TypeScript's "Go to Definition" takes you to the type you imported — and you imported the interface, not the impl. Don't search for the method name — `openConversation` could appear in dozens of files (the interface, the fake, tests, every consumer). Instead, search for the create function that constructs the controller. The naming convention is always `create<Name>`.
 
 ### Calling Backend RPCs from Frontend Code
 
