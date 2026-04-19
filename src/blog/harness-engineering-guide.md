@@ -3,9 +3,14 @@ title: "Harness engineering guide"
 description: ""
 added: "Apr 12 2026"
 tags: [AI]
+updatedDate: "Apr 19 2026"
 ---
 
 Harness engineering keeps coming up in conversations, yet most of us encounter it in our daily work without fully recognizing it.
+
+```
+OpenClaw (AGENTS.md) -- LLM -- Cowork/Claude Code (CLAUDE.md)
+```
 
 ## How agents can run for a long time
 

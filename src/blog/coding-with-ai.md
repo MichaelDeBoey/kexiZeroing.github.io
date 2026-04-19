@@ -3,7 +3,7 @@ title: "Coding with AI"
 description: ""
 added: "May 27 2025"
 tags: [AI]
-updatedDate: "Apr 11 2026"
+updatedDate: "Apr 19 2026"
 ---
 
 ## Get Started with Cursor
@@ -436,6 +436,46 @@ Type `/plugin` and go to the Discover tab, you can see plugins like frontend-des
 > Another workaround is to create symbolic link `CLAUDE.md` that refers to `AGENTS.md` using `ln` command.
 >
 > Similarly, the `.agents/skills/` path is part of the Agent Skills open standard which is a cross-tool standard, but Claude Code uses its own `.claude/` directory structure, not `.agents/`.
+
+### Understanding hooks
+
+Hooks let you handle events at key points in Claude Code lifecycle.
+
+| Hook             | Description                                          |
+| ---------------- | ---------------------------------------------------- |
+| SessionStart     | When a session begins or resumes                     |
+| UserPromptSubmit | When you submit a prompt, before Claude processes it |
+| PreToolUse       | Before a tool call executes. Can block it            |
+| PostToolUse      | After a tool call succeeds                           |
+| Notification     | When Claude Code sends a notification                |
+| SubagentStart    | When a subagent is spawned                           |
+| SubagentStop     | When a subagent finishes                             |
+
+Hooks are defined in JSON settings files. The configuration has three levels of nesting:
+
+- Choose a hook event to respond to, like `PreToolUse`
+- Add a matcher group to filter when it fires, like “only for the Bash tool”
+- Define one or more hook handlers to run when matched
+
+Open `~/.claude/settings.json` and add a `PreToolUse` hook. The `matcher` field filters when hooks fire. `Bash` matches only the Bash tool; `Edit|Write` matches either tool exactly.
+
+```json
+{
+  "hooks": {
+    "PreToolUse": [
+      {
+        "matcher": "Bash",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node ~/.claude/hooks/foo.js"
+          }
+        ]
+      }
+    ]
+  }
+}
+```
 
 ### Auto mode
 

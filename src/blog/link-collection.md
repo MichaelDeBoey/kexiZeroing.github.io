@@ -600,7 +600,7 @@ Comprehensive Claude Code project configuration showcase: https://github.com/Chr
 
 Claude Code Unpacked: https://ccunpacked.dev, https://claw-code.codes, https://www.mintlify.com/VineeTagarwaL-code/claude-code
 
-A skill for removing AI writing patterns from prose: https://github.com/stephenturner/skill-deslop
+Claude Design system prompt: https://github.com/elder-plinius/CL4R1T4S/blob/main/ANTHROPIC/Claude-Design-Sys-Prompt.txt
 
 ---
 

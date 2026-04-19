@@ -6,6 +6,7 @@ tags: [AI]
 ---
 
 > This post walks through the core components of a coding agent, based on [rasbt/mini-coding-agent](https://github.com/rasbt/mini-coding-agent). The original is in Python; the samples below are adapted to TypeScript.
+> Another good one: https://www.mihaileric.com/The-Emperor-Has-No-Clothes
 
 A coding agent is a specialized type of agent designed for software engineering tasks. It orchestrates code context, tools, execution, and iterative feedback within a focused workflow. Learn more in [Core building blocks of powerful agents](https://kexizeroing.github.io/post/core-building-blocks-of-powerful-agents).
 

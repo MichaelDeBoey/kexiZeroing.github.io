@@ -382,7 +382,7 @@ Place static content (system instructions, context, tool definitions) at the beg
 
 ### Claude System Prompts
 
-Claude includes a System Prompts release notes section in its docs. This section logs updates made to the default system prompts used on Claude.ai and in the mobile apps. The system prompt does not affect the API. Check it out here: https://docs.anthropic.com/en/release-notes/system-prompts
+Claude includes a System Prompts release notes section in its docs. This section logs updates made to the default system prompts used on Claude.ai and in the mobile apps. The system prompt does not affect the API. Check it out here: https://platform.claude.com/docs/en/release-notes/system-prompts
 
 ## OpenAI Responses vs. Chat Completions
 
