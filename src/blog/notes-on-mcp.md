@@ -312,3 +312,4 @@ WebMCP is currently an early preview feature from Google Chrome. While the stand
 - https://developer.chrome.com/blog/chrome-devtools-mcp
 - https://developer.chrome.com/blog/autofix-runtime-devtools-mcp
 - https://developers.openai.com/apps-sdk/build/mcp-server
+- https://github.com/mdn/mcp

@@ -626,6 +626,8 @@ Making ALL Software Agent-Native: https://github.com/HKUDS/CLI-Anything
 
 Make any website & tool your CLI: https://github.com/jackwener/opencli
 
+How LLMs Work: https://github.com/w3cj/how-llms-work
+
 ---
 
 ## Machine Learning
