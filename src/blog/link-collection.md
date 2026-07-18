@@ -558,8 +558,6 @@ An interactive demo to try the new text-to-speech model: https://www.openai.fm
 
 Run AI Agent in your browser: https://github.com/browser-use/web-ui
 
-GPT-4o Image Prompts Gallery: https://github.com/ImgEdify/Awesome-GPT4o-Image-Prompts
-
 Up-to-date documentation you can talk to for every repo in the world: https://deepwiki.com
 
 Real-time conversational AI models run locally: https://huggingface.co/spaces/webml-community/conversational-webgpu
@@ -568,11 +566,7 @@ An open-source database of AI models: https://models.dev
 
 The AI browser automation framework: https://www.stagehand.dev
 
-Discover and share powerful prompts for AI models: https://shumerprompt.com
-
 README for agents: https://agents.md
-
-Apps SDK - Our framework to build apps for ChatGPT: https://developers.openai.com/apps-sdk
 
 The Modern Software Developer - Stanford University: https://themodernsoftware.dev
 
@@ -588,8 +582,6 @@ A Complete Guide To AGENTS.md: https://www.aihero.dev/a-complete-guide-to-agents
 
 Complete Claude Code configuration collection: https://github.com/affaan-m/everything-claude-code
 
-Read skill.md and follow the instructions to join Moltbook: https://www.moltbook.com/skill.md
-
 The awesome collection of OpenClaw Skills: https://github.com/VoltAgent/awesome-openclaw-skills
 
 Removes signs of AI-generated writing from text: https://github.com/blader/humanizer
@@ -602,29 +594,17 @@ Comprehensive Claude Code project configuration showcase: https://github.com/Chr
 
 Claude Code Unpacked: https://ccunpacked.dev, https://claw-code.codes, https://www.mintlify.com/VineeTagarwaL-code/claude-code
 
-Claude Design system prompt: https://github.com/elder-plinius/CL4R1T4S/blob/main/ANTHROPIC/Claude-Design-Sys-Prompt.txt
+Leaked system prompt for all: https://github.com/elder-plinius/CL4R1T4S
 
 Modern Web Guidance agent skill: https://developer.chrome.com/docs/modern-web-guidance, https://github.com/GoogleChrome/modern-web-guidance-src
 
 Hermes Agent Architecture Explained: https://alejandro-ao.com/hermes-agent-architecture
 
----
-
-## CLI for Agents
-
 One CLI for all of Google Workspace: https://github.com/googleworkspace/cli
 
 Browser automation CLI for AI agents: https://github.com/vercel-labs/agent-browser
 
-CLI to control iOS and Android devices for AI agents: https://github.com/callstackincubator/agent-device
-
-The official CLI for Resend: https://github.com/resend/resend-cli
-
-GitHub’s official command line tool: https://github.com/cli/cli
-
 Making ALL Software Agent-Native: https://github.com/HKUDS/CLI-Anything
-
-Make any website & tool your CLI: https://github.com/jackwener/opencli
 
 How LLMs Work: https://github.com/w3cj/how-llms-work
 
